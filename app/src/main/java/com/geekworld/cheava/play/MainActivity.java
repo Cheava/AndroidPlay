@@ -62,9 +62,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mTextView2 = (TextView) findViewById(R.id.textView2);
-        CharSequence str_2 = getString(R.string.textView2);
-        String str_3 = "\n\n我是打酱油的╮(╯▽╰)╭";
-        mTextView2.setText(str_2 + str_3  );
+        if(getIntent() != null) {
+            if(getIntent().hasExtra("this_id")) {
+                mTextView2.setText(getIntent().getStringExtra("this_id"));
+            }
+        }
+
         mTextView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button button1 = (Button)findViewById(R.id.button);
-        button1.setOnClickListener(new View.OnClickListener() {
+        Button button = (Button)findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"你的手机将在三秒启动自爆程序 ", Toast.LENGTH_SHORT).show();
@@ -117,6 +120,16 @@ public class MainActivity extends AppCompatActivity {
                 };
                 Timer timer = new Timer();
                 timer.schedule(task, 2400);
+            }
+        });
+
+        Button button1 = (Button)findViewById(R.id.button1);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.putExtra("this_id","我是二师兄");
+                startActivity(intent);
             }
         });
     }
