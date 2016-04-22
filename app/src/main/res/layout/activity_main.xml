@@ -18,11 +18,13 @@
         android:text="Hello World!"
         android:background="#ffffff"
         android:id="@+id/myTextView01"
-        android:textSize="20dp"
+        android:textSize="30dp"
         android:autoLink="all"
         android:textAlignment="center"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="119dp"
+        android:clickable="true" />
 
     <TextView
         android:layout_width="match_parent"
@@ -30,14 +32,12 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/textView"
         android:id="@+id/textView"
-        android:layout_marginTop="29dp"
         android:background="@color/yellow"
         android:textColor="#78a5f8"
         android:layout_gravity="center"
+        android:textAlignment="center"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_alignStart="@+id/textView2"
-        android:textAlignment="center" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="match_parent"
@@ -58,11 +58,10 @@
         android:layout_height="wrap_content"
         android:text="（╯‵□′）╯ノ┻━┻☆自爆吧"
         android:id="@+id/button"
-        android:layout_marginTop="18dp"
-        android:layout_below="@+id/textView2"
-        android:layout_alignRight="@+id/myTextView01"
-        android:layout_alignEnd="@+id/myTextView01"
         android:clickable="true"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="61dp" />
 
 </RelativeLayout>
