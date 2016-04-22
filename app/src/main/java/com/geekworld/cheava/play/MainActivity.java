@@ -5,13 +5,19 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.BoolRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +28,9 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextView0,mTextView1, mTextView2;
+    private EditText mEditText;
+    private CheckBox mCheckBox;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +76,33 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        mEditText = (EditText)findViewById(R.id.editText);
+        mCheckBox = (CheckBox)findViewById(R.id.checkBox);
+
+        if(savedInstanceState != null){
+            String tempData = savedInstanceState.getString("data_store");
+            boolean isCheck = savedInstanceState.getBoolean("status_check");
+            mEditText.setText(tempData);
+            if(isCheck) {
+                mEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            }
+            else {
+                mEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            }
+        }
+
+        mEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    mEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+                else {
+                    mEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+            }
+        });
 
         Button button1 = (Button)findViewById(R.id.button);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -114,4 +150,14 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        String tempData = mEditText.getText().toString();
+        boolean isCheck = mCheckBox.isChecked();
+        outState.putString("data_store",tempData);
+        outState.putBoolean("status_check",isCheck);
+
+        }
 }
