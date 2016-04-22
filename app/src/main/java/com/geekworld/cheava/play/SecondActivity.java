@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 import android.os.Handler;
@@ -26,7 +27,23 @@ public class SecondActivity extends AppCompatActivity {
         mTextView2_0 = (TextView)findViewById(R.id.textView2_0);
         intent =  getIntent();
         timer.schedule(task,3000);
+        mTextView2_0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_back = new Intent();
+                intent_back.putExtra("data_return","我胡汉三又回来啦！");
+                setResult(RESULT_OK,intent_back);
+                finish();
+            }
+        });
+    }
 
+    @Override
+    public void onBackPressed(){
+        Intent intent_back = new Intent();
+        intent_back.putExtra("data_return","我胡汉三又回来啦！");
+        setResult(RESULT_OK,intent_back);
+        finish();
     }
 
     //在Timer中设置handler的message
