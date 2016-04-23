@@ -3,17 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1"
+    android:background="@drawable/sunshine"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="66dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/textView2_0"
         android:id="@+id/textView2_0"
         android:clickable="true"
         android:height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.07"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:lines="2" />
+
+    <ImageView
+        android:layout_width="186dp"
+        android:layout_height="70dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/dragon"
+        android:clickable="true"
+        android:layout_weight="0.35"
+        android:layout_gravity="center_horizontal" />
+
 </LinearLayout>

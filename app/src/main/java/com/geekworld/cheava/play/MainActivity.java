@@ -1,15 +1,15 @@
 package com.geekworld.cheava.play;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.BoolRes;
+import android.preference.DialogPreference;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,24 +21,25 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.StringTokenizer;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView mTextView0,mTextView1, mTextView2;
     private EditText mEditText;
     private CheckBox mCheckBox;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
 
         mTextView0 = (TextView) findViewById(R.id.textView0);
-        mTextView0.setOnClickListener(new View.OnClickListener() {
+        mTextView0.setOnClickListener(this);
+/*        mTextView0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent("com.geekworld.cheava.play.ACTION_START");
@@ -46,12 +47,14 @@ public class MainActivity extends AppCompatActivity {
                 intent.addCategory("com.geekworld.cheava.play.TEST_CATEGORY");
                 startActivityForResult(intent,1);
             }
-        });
+        });*/
         //Resources resources = getBaseContext().getResources();
         //Drawable HippoDrawable = resources.getDrawable(R.drawable.abc_list_selector_disabled_holo_light);
         //mTextView01.setBackgroundDrawable(HippoDrawable);
 
         mTextView1 = (TextView) findViewById(R.id.textView1);
+        mTextView1.setOnClickListener(this);
+/*
         mTextView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,15 +63,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+*/
 
         mTextView2 = (TextView) findViewById(R.id.textView2);
+        mTextView2.setOnClickListener(this);
         if(getIntent() != null) {
             if(getIntent().hasExtra("this_id")) {
                 mTextView2.setText(getIntent().getStringExtra("this_id"));
             }
         }
 
-        mTextView2.setOnClickListener(new View.OnClickListener() {
+/*        mTextView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Intent intent = new Intent(MainActivity.this,SecondActivity.class);
@@ -76,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.setData(Uri.parse("http://www.zhihu.com"));
                 startActivity(intent);
             }
-        });
+        });*/
 
 
         mEditText = (EditText)findViewById(R.id.editText);
@@ -108,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Button button = (Button)findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(this);
+/*        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"你的手机将在三秒启动自爆程序 ", Toast.LENGTH_SHORT).show();
@@ -121,17 +127,18 @@ public class MainActivity extends AppCompatActivity {
                 Timer timer = new Timer();
                 timer.schedule(task, 2400);
             }
-        });
+        });*/
 
         Button button1 = (Button)findViewById(R.id.button1);
-        button1.setOnClickListener(new View.OnClickListener() {
+        button1.setOnClickListener(this);
+/*        button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 intent.putExtra("this_id","我是二师兄");
                 startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override
@@ -173,4 +180,75 @@ public class MainActivity extends AppCompatActivity {
         outState.putBoolean("status_check",isCheck);
 
         }
+
+    @Override
+    public void onClick(View v){
+        switch(v.getId()){
+            case R.id.button:
+                exitComfirm();
+                break;
+
+            case R.id.button1:
+                intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.putExtra("this_id","大家好，我是二师兄[猪]");
+                startActivity(intent);
+                break;
+
+            case R.id.textView0:
+                intent = new Intent("com.geekworld.cheava.play.ACTION_START");
+                intent.putExtra("extra_data","神龙：谁找我？(o-ωｑ)).oO 困，揉眼睛…… ");
+                intent.addCategory("com.geekworld.cheava.play.TEST_CATEGORY");
+                startActivityForResult(intent,1);
+                break;
+
+            case R.id.textView1:
+                intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel: 10086"));
+                startActivity(intent);
+                break;
+
+            case R.id.textView2:
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://www.zhihu.com"));
+                startActivity(intent);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void exitComfirm(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+        dialog.setTitle("警告！");
+        dialog.setMessage("确定自爆？");
+        dialog.setCancelable(false);
+        dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "你的手机将在三秒启动自爆程序 ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"嘣！~~~~~ ", Toast.LENGTH_SHORT).show();
+                TimerTask task = new TimerTask(){
+                    public void run(){
+                        finish();
+                    }
+                };
+                Timer timer = new Timer();
+                timer.schedule(task, 2400);
+            }
+        });
+        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        dialog.show();
+    }
+
+    public void onBackPressed(){
+        exitComfirm();
+    }
 }
+
+
+
