@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_movies"
+        android:title="星辰大海"
+        android:visible="true"
+        android:showAsAction="ifRoom|withText"/>
+    <item
+        android:id="@+id/item_music"
+        android:title="Just Do IT"
+        android:visible="true"
+        android:showAsAction="ifRoom|withText"/>
+    <item
+        android:id="@+id/item_photo"
+        android:title="教练，我想打篮球！"
+        android:visible="true"
+        android:showAsAction="ifRoom|withText"/>
+
+</menu>
