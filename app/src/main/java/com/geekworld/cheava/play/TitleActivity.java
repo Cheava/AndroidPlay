@@ -56,7 +56,7 @@ public class TitleActivity extends LinearLayout implements View.OnClickListener{
                 return false;
             }
         });
-        //设置popupWindow消失的点击事件
+        //设置popupMenu消失的点击事件,并非点击非Menu区域时的menu消失事件
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
             public void onDismiss(PopupMenu menu) {

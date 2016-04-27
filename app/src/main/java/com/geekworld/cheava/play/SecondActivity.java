@@ -1,17 +1,25 @@
 package com.geekworld.cheava.play;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.os.Handler;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,6 +29,9 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
     private Intent intent ;
     private Timer timer = new Timer();
     private ImageView mImageView;
+    private String[] data = {"鸣人","佐助","杨过","小龙女","福尔摩斯","华生","毕福剑","苍老师",
+            "鸣人","佐助","杨过","小龙女","福尔摩斯","华生","毕福剑","苍老师"};
+    private List<Person> personList = new ArrayList<Person>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +43,11 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         mImageView = (ImageView)findViewById(R.id.imageView);
         mImageView.setOnClickListener(this);
 
+        initPerson();
+        PersonAdapter adapter = new PersonAdapter(SecondActivity.this,R.layout.person_item,personList);
+        ListView listView = (ListView)findViewById(R.id.list_view);
+        listView.setAdapter(adapter);
+
         intent =  getIntent();
         timer.schedule(task,3000);
         mTextView2_0.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +56,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
                 sendIntent();
             }
         });
+
     }
 
     @Override
@@ -82,4 +99,61 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         setResult(RESULT_OK,intent_back);
         finish();
     }
+
+
+    private void initPerson(){
+        Person mingren = new Person("鸣人",R.drawable.mingren);
+        personList.add(mingren);
+        Person zuozhu = new Person("佐助",R.drawable.zuozhu);
+        personList.add(zuozhu);
+        Person yangguo = new Person("杨过",R.drawable.yangguo);
+        personList.add(yangguo);
+        Person xialongnv = new Person("小龙女",R.drawable.xialongnv);
+        personList.add(xialongnv);
+        Person fu = new Person("福尔摩斯",R.drawable.fu);
+        personList.add(fu);
+        Person hua = new Person("华生",R.drawable.hua);
+        personList.add(hua);
+        Person bi = new Person("毕福剑",R.drawable.stop);
+        personList.add(bi);
+        Person cang = new Person("苍老师",R.drawable.stop);
+        personList.add(cang);
+
+    }
+
+    public class PersonAdapter extends ArrayAdapter<Person>{
+        private int resourceId;
+        public PersonAdapter(Context context,int textViewResourceId,List<Person> object){
+            super(context,textViewResourceId,object);
+            resourceId = textViewResourceId;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent){
+            Person person = getItem(position);
+            View view = LayoutInflater.from(getContext()).inflate(resourceId,null);
+            ImageView personImage = (ImageView)view.findViewById(R.id.person_image);
+            TextView personName = (TextView)view.findViewById(R.id.person_name);
+            personName.setText(person.getName());
+            personImage.setImageResource(person.getImageId());
+            return view;
+        }
+    }
+    public class Person{
+        private String name;
+        private int imageId;
+        public Person(String name , int imageId){
+            this.name = name;
+            this.imageId = imageId;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getImageId(){
+            return imageId;
+        }
+    }
+
 }

@@ -40,31 +40,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mTextView0 = (TextView) findViewById(R.id.textView0);
         mTextView0.setOnClickListener(this);
-/*        mTextView0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent("com.geekworld.cheava.play.ACTION_START");
-                intent.putExtra("extra_data","神龙：谁找我？(o-ωｑ)).oO 困，揉眼睛…… ");
-                intent.addCategory("com.geekworld.cheava.play.TEST_CATEGORY");
-                startActivityForResult(intent,1);
-            }
-        });*/
-        //Resources resources = getBaseContext().getResources();
-        //Drawable HippoDrawable = resources.getDrawable(R.drawable.abc_list_selector_disabled_holo_light);
-        //mTextView01.setBackgroundDrawable(HippoDrawable);
 
         mTextView1 = (TextView) findViewById(R.id.textView1);
         mTextView1.setOnClickListener(this);
-/*
-        mTextView1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel: 10086"));
-                startActivity(intent);
-            }
-        });
-*/
 
         mTextView2 = (TextView) findViewById(R.id.textView2);
         mTextView2.setOnClickListener(this);
@@ -73,17 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mTextView2.setText(getIntent().getStringExtra("this_id"));
             }
         }
-
-/*        mTextView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent intent = new Intent(MainActivity.this,SecondActivity.class);
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://www.zhihu.com"));
-                startActivity(intent);
-            }
-        });*/
-
 
         mEditText = (EditText)findViewById(R.id.editText);
         mCheckBox = (CheckBox)findViewById(R.id.checkBox);
@@ -115,31 +82,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button button = (Button)findViewById(R.id.button);
         button.setOnClickListener(this);
-/*        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"你的手机将在三秒启动自爆程序 ", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(),"嘣！~~~~~ ", Toast.LENGTH_SHORT).show();
-                TimerTask task = new TimerTask(){
-                    public void run(){
-                        finish();
-                    }
-                };
-                Timer timer = new Timer();
-                timer.schedule(task, 2400);
-            }
-        });*/
 
         Button button1 = (Button)findViewById(R.id.button1);
         button1.setOnClickListener(this);
-/*        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                intent.putExtra("this_id","我是二师兄");
-                startActivity(intent);
-            }
-        });*/
     }
 
     @Override
