@@ -2,24 +2,22 @@ package com.geekworld.cheava.play;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.os.Handler;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -47,16 +45,17 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         PersonAdapter adapter = new PersonAdapter(SecondActivity.this,R.layout.person_item,personList);
         ListView listView = (ListView)findViewById(R.id.list_view);
         listView.setAdapter(adapter);
-
-        intent =  getIntent();
-        timer.schedule(task,3000);
-        mTextView2_0.setOnClickListener(new View.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                sendIntent();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Person person = personList.get(position);
+                Toast.makeText(SecondActivity.this,person.getName(),Toast.LENGTH_SHORT).show();
             }
         });
 
+        intent =  getIntent();
+        timer.schedule(task,3000);
+        mTextView2_0.setOnClickListener(this);
     }
 
     @Override
@@ -86,7 +85,10 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v){
         switch(v.getId()){
             case R.id.imageView:
-                    mImageView.setImageResource(R.drawable.cat);
+                mImageView.setImageResource(R.drawable.cat);
+                break;
+            case R.id.textView2_0:
+                sendIntent();
                 break;
             default:
                 break;
@@ -131,7 +133,12 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         public View getView(int position, View convertView, ViewGroup parent){
             Person person = getItem(position);
-            View view = LayoutInflater.from(getContext()).inflate(resourceId,null);
+            View view ;
+            if(convertView == null){
+                view = LayoutInflater.from(getContext()).inflate(resourceId,null);
+            }else{
+                view = convertView;
+            }
             ImageView personImage = (ImageView)view.findViewById(R.id.person_image);
             TextView personName = (TextView)view.findViewById(R.id.person_name);
             personName.setText(person.getName());
