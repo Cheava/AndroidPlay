@@ -11,17 +11,25 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".SecondActivity">
-            <intent-filter>
-                <action android:name="com.geekworld.cheava.play.ACTION_START"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="com.geekworld.cheava.play.TEST_CATEGORY"/>
-            </intent-filter>
-        </activity>
+        <intent-filter>
+            <action android:name="com.geekworld.cheava.play.ACTION_START"/>
+            <category android:name="android.intent.category.DEFAULT"/>
+            <category android:name="com.geekworld.cheava.play.TEST_CATEGORY"/>
+        </intent-filter>
+    </activity>
+    <activity android:name=".WechatActivity"
+        android:launchMode="singleTop"
+        >
+        <intent-filter>
+            <action android:name="com.geekworld.cheava.play.ACTION_START"/>
+            <category android:name="android.intent.category.DEFAULT"/>
+            <category android:name="com.geekworld.cheava.play.TEST_CATEGORY"/>
+        </intent-filter>
+    </activity>
     </application>
 
 </manifest>

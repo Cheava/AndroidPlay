@@ -148,8 +148,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.textView1:
-                intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel: 10086"));
+                intent = new Intent(MainActivity.this,WechatActivity.class);
+                //intent.setData(Uri.parse("tel: 10086"));
                 startActivity(intent);
                 break;
 
