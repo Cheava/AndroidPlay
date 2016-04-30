@@ -41,7 +41,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         mImageView = (ImageView)findViewById(R.id.imageView);
         mImageView.setOnClickListener(this);
 
-        initPerson();
+        //initPerson();
         PersonAdapter adapter = new PersonAdapter(SecondActivity.this,R.layout.person_item,personList);
         ListView listView = (ListView)findViewById(R.id.list_view);
         listView.setAdapter(adapter);
@@ -102,6 +102,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         finish();
     }
 
+/*
 
     private void initPerson(){
         Person mingren = new Person("鸣人",R.drawable.mingren);
@@ -122,6 +123,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         personList.add(cang);
 
     }
+*/
 
     public class PersonAdapter extends ArrayAdapter<Person>{
         private int resourceId;

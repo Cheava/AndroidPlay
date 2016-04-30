@@ -31,8 +31,8 @@ public class WechatActivity extends Activity{
     private Msg msg;
 
     public class ViewHolder extends View{
-        public ViewHolder(){
-            super();
+        public ViewHolder(Context context){
+            super(context);
         }
         LinearLayout leftLayout;
         LinearLayout rightLayout;
@@ -84,25 +84,25 @@ public class WechatActivity extends Activity{
             ViewHolder viewHolder;
             if(convertView == null){
                 view = LayoutInflater.from(getContext()).inflate(resourceId,null);
-                viewHolder = new ViewHolder();
+                viewHolder = new ViewHolder(getContext());
                 viewHolder.leftLayout = (LinearLayout)view.findViewById(R.id.left_layout);
                 viewHolder.rightLayout = (LinearLayout)view.findViewById(R.id.right_layout);
                 viewHolder.leftMsg = (TextView)view.findViewById(R.id.left_msg);
-                viewHolder.rightMsg = (TextView)view.findViewById(R.id.riht_msg);
+                viewHolder.rightMsg = (TextView)view.findViewById(R.id.right_msg);
                 view.setTag(viewHolder);
             }else{
                 view = convertView;
-                viewHolder = (viewHolder)view.getTag();
+                viewHolder = (ViewHolder)view.getTag();
             }
             if(msg.getType() == Msg.TYPE_RECEIVED){
                 viewHolder.leftLayout.setVisibility(View.VISIBLE);
                 viewHolder.rightLayout.setVisibility(View.GONE);
-                viewHolder.leftMsg.getContext();
+                viewHolder.leftMsg.setText(msg.getContent());
             }
             else if(msg.getType() == Msg.TYPE_SENT){
                 viewHolder.rightLayout.setVisibility(View.VISIBLE);
                 viewHolder.leftLayout.setVisibility(View.GONE);
-                viewHolder.rightMsg.getContext();
+                viewHolder.rightMsg.setText(msg.getContent());
             }
             return view;
         }

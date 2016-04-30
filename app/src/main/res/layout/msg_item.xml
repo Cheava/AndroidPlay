@@ -9,8 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:background="@drawable/message_left"
-        >
+        android:background="@drawable/message_left">
 
         <TextView
             android:id="@+id/left_msg"
@@ -31,7 +30,7 @@
         >
 
         <TextView
-            android:id="@+id/riht_msg"
+            android:id="@+id/right_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
