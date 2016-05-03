@@ -2,6 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <com.geekworld.cheava.play.TitleActivity
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.geekworld.cheava.play.TitleActivity>
 
     <ListView
         android:id="@+id/msg_list_view"
