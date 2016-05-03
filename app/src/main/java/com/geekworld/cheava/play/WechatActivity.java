@@ -3,9 +3,12 @@ package com.geekworld.cheava.play;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -74,15 +78,12 @@ public class WechatActivity extends BaseActivity{
             public void onClick(View v) {
                 String content = inputText.getText().toString();
                 if(!"".equals(content)){
-                    if(content.equals("offline")){
-                        Intent intent = new Intent("com.geekworld.cheava.FORCE_OFFLINE");
-                        sendBroadcast(intent);
-                    }
-                    msg = new Msg(content,Msg.TYPE_SENT);
-                    msgList.add(msg);
-                    adapter.notifyDataSetChanged();
-                    msgListView.setSelection(msgList.size());
+                    sendMsg(content);
                     inputText.setText("");
+                    String respon = CommandParse(content);
+                    if(!"".equals(respon)){
+                        recMsg(respon);
+                    }
                 }
             }
         });
@@ -196,6 +197,46 @@ public class WechatActivity extends BaseActivity{
             }
         }
         return  content.toString();
+    }
+
+    public void sendMsg(String content){
+        msg = new Msg(content,Msg.TYPE_SENT);
+        msgList.add(msg);
+        adapter.notifyDataSetChanged();
+        msgListView.setSelection(msgList.size());
+    }
+    public void recMsg(String content){
+        msg = new Msg(content,Msg.TYPE_RECEIVED);
+        msgList.add(msg);
+        adapter.notifyDataSetChanged();
+        msgListView.setSelection(msgList.size());
+    }
+
+    public String CommandParse(String content){
+        switch (content){
+
+            case "offline":
+                Intent intent = new Intent("com.geekworld.cheava.FORCE_OFFLINE");
+                sendBroadcast(intent);
+                break;
+            case "time-touch":
+                SharedPreferences.Editor editor = getSharedPreferences("storedTime",MODE_PRIVATE).edit();
+                String time = DateFormat.format("yyyy-MM-dd HH:mm:ss", new Date()).toString();
+                editor.putString("time",time);
+                editor.commit();
+                Log.d("wzh","SharedPreference保存的时间为：" + time);
+                return "Touch OK!";
+
+            case "time-get":
+                SharedPreferences pref = getSharedPreferences("storedTime",MODE_PRIVATE);
+                String storedtime = pref.getString("time","");
+                Log.d("wzh","SharedPreference读取的时间为：" + storedtime);
+                return storedtime;
+
+            default:
+                break;
+        }
+        return "";
     }
 }
 
