@@ -209,8 +209,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.textView2:
-                intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://www.zhihu.com"));
+                intent = new Intent(MainActivity.this,ContactsActivity.class);
+                //intent.setData(Uri.parse("http://www.zhihu.com"));
                 startActivity(intent);
                 break;
 
