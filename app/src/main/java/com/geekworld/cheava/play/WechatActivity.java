@@ -3,6 +3,7 @@ package com.geekworld.cheava.play;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -29,6 +32,7 @@ import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -262,21 +266,32 @@ public class WechatActivity extends BaseActivity{
 
     public void sendNotice(){
         NotificationManager noticeManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        Notification.Builder  builder = new Notification.Builder(WechatActivity.this);
-        builder.setTicker("你有一条新消息")
-                .setContentTitle("一个坏消息")
-                .setContentText("你的银行卡密码被盗了")
-                .setSmallIcon(R.drawable.stop)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.wechat))
-                .build();
-        Notification notification = builder.build();
-        noticeManager.notify(1,notification);
+        Notification.Builder  builder = new Notification.Builder(this);
 
+        Intent intent = new Intent(this,MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        builder.setSmallIcon(R.drawable.notice);
+        //在小米2 原生android 5.1.1上无状态栏通知显示
+        //在荣耀7 EMUI 3.1（android 5.0.1）上可以显示状态栏通知
+        builder.setTicker("你有一条新消息");
+        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.wechat));
+        builder.setContentTitle("一个坏消息");
+        builder.setContentText("你的银行卡密码被盗了");
+        builder.setAutoCancel(true);
+        builder.setContentIntent(pendingIntent);
+        builder.setSound(Uri.fromFile(new File("/system/media/audio/ringtones/Carina.ogg")));
+        Notification notification = builder.build();
+        notification.ledARGB = Color.GREEN;
+        notification.ledOnMS = 1000;
+        notification.ledOffMS = 1000;
+        long[] vibrates = {0,1000,1000,1000};
+        notification.vibrate = vibrates;
+        noticeManager.notify(0,notification);
     }
 
     public String CommandParse(String content){
         switch (content){
-
             case "offline":
                 Intent intent = new Intent("com.geekworld.cheava.FORCE_OFFLINE");
                 sendBroadcast(intent);
