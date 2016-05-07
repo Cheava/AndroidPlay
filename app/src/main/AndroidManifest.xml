@@ -53,5 +53,9 @@
                 <action android:name="com.geekworld.cheava.FORCE_OFFLINE"/>
             </intent-filter>
         </receiver>
+        <provider
+            android:authorities="com.geekworld.cheava.provider"
+            android:name="com.geekworld.cheava.play.HistoryProvider">
+        </provider>
     </application>
 </manifest>

@@ -59,6 +59,7 @@ public class WechatActivity extends BaseActivity{
     private ContentValues values;
     private Cursor cursor;
     private String last_id;
+    private String newId = null;
 
     public class ViewHolder extends View{
         public ViewHolder(Context context){
@@ -68,31 +69,6 @@ public class WechatActivity extends BaseActivity{
         LinearLayout rightLayout;
         TextView leftMsg;
         TextView rightMsg;
-    }
-
-    public class DatabaseHelper extends SQLiteOpenHelper{
-        private Context mContext;
-
-        public static final String CREATE_HISTORY = "create table history ("
-                + "id integer primary key autoincrement, "
-                + "time string, "
-                + "msg string)";
-
-        public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,int version){
-            super(context,name,factory,version);
-            mContext = context;
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db){
-            //db.execSQL(CREATE_HISTORY);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-            db.execSQL("drop table if exists History");
-            onCreate(db);
-        }
     }
 
     @Override
@@ -290,6 +266,29 @@ public class WechatActivity extends BaseActivity{
         noticeManager.notify(0,notification);
     }
 
+    public void providerInsert(){
+        Uri uri = Uri.parse("content://com.geekworld.cheava.provider/msg");
+        ContentValues values = new ContentValues();
+        values.put("test_msg","test for provider");
+        values.put("test_time","1900-1-1");
+        Uri newUri = getContentResolver().insert(uri,values);
+        newId = newUri.getPathSegments().get(1);
+    }
+
+    public String providerQuery(){
+        String result = null;
+        Uri uri = Uri.parse("content://com.geekworld.cheava.provider/msg");
+        Cursor cursor = getContentResolver().query(uri,null,null,null,null);
+        if(cursor != null){
+            while (cursor.moveToNext()){
+                String msg = cursor.getString(cursor.getColumnIndex("test_msg"));
+                String time = cursor.getString(cursor.getColumnIndex("test_time"));
+                result = msg +" " +time;
+            }
+        }
+        return result;
+    }
+
     public String CommandParse(String content){
         switch (content){
             case "offline":
@@ -334,6 +333,18 @@ public class WechatActivity extends BaseActivity{
                 cursor.moveToLast();
                 String last_msg = cursor.getString(cursor.getColumnIndex("msg"));
                 return last_msg;
+
+            case "insert-provider":
+                providerInsert();
+                return providerQuery();
+
+/*            case "update-provider":
+                providerUpdate();
+                providerQuery();
+
+            case "delete-provider"
+                providerDelete();
+                providerQuery();*/
 
             case "send-notice":
                 sendNotice();
