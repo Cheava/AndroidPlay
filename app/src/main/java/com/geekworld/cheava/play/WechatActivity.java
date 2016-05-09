@@ -80,11 +80,11 @@ public class WechatActivity extends BaseActivity{
         dbHelper = new DatabaseHelper(this,"History.db",null,1);
         values = new ContentValues();
         db = dbHelper.getWritableDatabase();
-        try {
+/*        try {
             db.execSQL(dbHelper.CREATE_HISTORY);
         }catch (Exception e){
             Log.i("wzh","The table exists.");
-        }
+        }*/
         cursor = db.query("history",null,null,null,null,null,null);
 
         inputText = (EditText)findViewById(R.id.input_text);
@@ -267,27 +267,42 @@ public class WechatActivity extends BaseActivity{
     }
 
     public void providerInsert(){
-        Uri uri = Uri.parse("content://com.geekworld.cheava.provider/msg");
+        Uri uri = Uri.parse("content://com.geekworld.cheava.provider/history");
         ContentValues values = new ContentValues();
-        values.put("test_msg","test for provider");
-        values.put("test_time","1900-1-1");
+        values.put("msg","test for provider");
+        values.put("time","1900-1-1");
         Uri newUri = getContentResolver().insert(uri,values);
         newId = newUri.getPathSegments().get(1);
     }
 
+    public void providerUpdate(){
+        Uri uri = Uri.parse("content://com.geekworld.cheava.provider/history" + newId);
+        ContentValues values = new ContentValues();
+        values.put("msg","update for provider");
+        values.put("time","2016-05-09");
+        getContentResolver().update(uri,values,null,null);
+    }
+
+    public void providerDelete(){
+        Uri uri = Uri.parse("content://com.geekworld.cheava.provider/history/" + newId);
+        getContentResolver().delete(uri,null,null);
+    }
+
     public String providerQuery(){
         String result = null;
-        Uri uri = Uri.parse("content://com.geekworld.cheava.provider/msg");
+        Uri uri = Uri.parse("content://com.geekworld.cheava.provider/history");
         Cursor cursor = getContentResolver().query(uri,null,null,null,null);
         if(cursor != null){
             while (cursor.moveToNext()){
-                String msg = cursor.getString(cursor.getColumnIndex("test_msg"));
-                String time = cursor.getString(cursor.getColumnIndex("test_time"));
-                result = msg +" " +time;
+                String msg = cursor.getString(cursor.getColumnIndex("msg"));
+                String time = cursor.getString(cursor.getColumnIndex("time"));
+                result = msg +"\n" +time;
             }
         }
         return result;
     }
+
+
 
     public String CommandParse(String content){
         switch (content){
@@ -338,13 +353,13 @@ public class WechatActivity extends BaseActivity{
                 providerInsert();
                 return providerQuery();
 
-/*            case "update-provider":
+            case "update-provider":
                 providerUpdate();
-                providerQuery();
+                return providerQuery();
 
-            case "delete-provider"
+            case "delete-provider":
                 providerDelete();
-                providerQuery();*/
+                return providerQuery();
 
             case "send-notice":
                 sendNotice();
