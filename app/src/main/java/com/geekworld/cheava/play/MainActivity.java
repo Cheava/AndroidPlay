@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,10 +23,15 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,6 +43,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private IntentFilter intentFilter;
     private NetworkChangeReceiver networkChangeReceiver;
     private Button mLogin;
+    private Button mCamera;
+    private ImageView mCameraView;
+    private Uri imageUri;
+    private static final int TAKE_PHOTO = 3;
+    private static final int CROP_PHOTO = 4;
 
     //Receiver的回调函数
     class NetworkChangeReceiver extends BroadcastReceiver{
@@ -81,12 +93,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button button1 = (Button)findViewById(R.id.button1);
         button1.setOnClickListener(this);
 
+        mCamera = (Button)findViewById(R.id.camera_capture);
+        mCamera.setOnClickListener(this);
+        mCamera.setOnLongClickListener(new cameraLongClick());
+        mCameraView = (ImageView)findViewById(R.id.camera_view);
+
         if(getIntent() != null) {
             if(getIntent().hasExtra("this_id")) {
                 mTextView2.setText(getIntent().getStringExtra("this_id"));
             }
         }
-
 
         //密码框的显示以及状态保存
         mEditText = (EditText)findViewById(R.id.editText);
@@ -132,6 +148,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 2:
                 if(mEditText.getText().toString() != ""){
                     mEditText.setText("");
+                }
+                break;
+
+            case TAKE_PHOTO:
+                if(resultCode == RESULT_OK){
+                    Intent intent = new Intent("com.android.camera.action.CROP");
+                    intent.setDataAndType(imageUri,"image/*");
+                    intent.putExtra("scale",true);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+                    startActivityForResult(intent,CROP_PHOTO);
+                }
+                break;
+
+            case CROP_PHOTO:
+                if(resultCode == RESULT_OK){
+                   mCameraView.setImageURI(imageUri);
                 }
                 break;
             default:
@@ -214,9 +246,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
 
+            case R.id.camera_capture:
+                imageUri = createFile("tempImage.jpg");
+                intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+                startActivityForResult(intent,TAKE_PHOTO);
+
             default:
                 break;
         }
+    }
+
+    public class cameraLongClick implements View.OnLongClickListener {
+        @Override
+        public boolean onLongClick(View view){
+            imageUri = createFile("outputImage.jpg");
+            intent = new Intent("android.intent.action.GET_CONTENT");
+            intent.setType("image/*");
+            intent.putExtra("crop",true);
+            intent.putExtra("scale",true);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+            startActivityForResult(intent,CROP_PHOTO);
+            return true;
+        }
+    }
+
+    public Uri createFile(String img){
+        File outputImage = new File(Environment.getExternalStorageDirectory(),img);
+        try {
+            if(outputImage.exists()){
+                outputImage.delete();
+            }
+            outputImage.createNewFile();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        Uri tempUri = Uri.fromFile(outputImage);
+        return tempUri;
     }
 
     //退出此活动时的确认窗口
